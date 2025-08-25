@@ -11,20 +11,20 @@ builder.Services.AddDbContext<SchoolContext>(options =>
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
-   var services = scope.ServiceProvider;
-   try
-   {
-       var context = services.GetRequiredService<SchoolContext>();
-       var created = context.Database.EnsureCreated();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<SchoolContext>();
+        var created = context.Database.EnsureCreated();
 
-   }
-   catch (Exception ex)
-   {
-       var logger = services.GetRequiredService<ILogger<Program>>();
-       logger.LogError(ex, "An error occurred creating the DB.");
-   }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Info: {info}", builder.Configuration.GetConnectionString("SchoolContext"));
+        logger.LogError(ex, "An error occurred creating the DB.");
+    }
 }
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
